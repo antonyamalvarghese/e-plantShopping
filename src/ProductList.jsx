@@ -3,7 +3,7 @@ import "./ProductList.css";
 import CartItem from "./CartItem";
 
 // ✅ Redux
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { addItem } from "./CartSlice"; // change to "./cartSlice" if file name is lowercase
 
 function ProductList({ onHomeClick }) {
@@ -15,6 +15,8 @@ function ProductList({ onHomeClick }) {
 
   const dispatch = useDispatch();
 
+    const cartItems = useSelector((state) => state.cart.items);
+    const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const plantsArray = [
     {
       category: "Air Purifying Plants",
@@ -337,7 +339,10 @@ function ProductList({ onHomeClick }) {
 
           <div>
             <a href="#" onClick={handleCartClick} style={styleA}>
-              <h1 className="cart">🛒</h1>
+            <h1 className="cart" style={{ position: "relative" }}>
+  🛒
+  {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+</h1>
             </a>
           </div>
         </div>

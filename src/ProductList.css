@@ -353,3 +353,19 @@ body {
 .add-btn:hover {
   filter: brightness(0.95);
 }
+.cart-badge{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: red;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
