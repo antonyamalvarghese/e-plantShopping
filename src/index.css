@@ -1,0 +1,12 @@
+/* Fix landing page left cut-off */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* KEY FIX */
+}
+
+#root {
+  width: 100%;
+  overflow-x: hidden; /* KEY FIX */
+}

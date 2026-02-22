@@ -2,21 +2,19 @@ import React, { useState } from "react";
 import "./ProductList.css";
 import CartItem from "./CartItem";
 
-// ✅ Redux
-import { useDispatch,useSelector } from "react-redux";
-import { addItem } from "./CartSlice"; // change to "./cartSlice" if file name is lowercase
+import { useDispatch, useSelector } from "react-redux";
+import { addItem } from "./CartSlice"; // change to "./cartSlice" if your file name is lowercase
 
 function ProductList({ onHomeClick }) {
   const [showCart, setShowCart] = useState(false);
   const [showPlants, setShowPlants] = useState(false);
 
-  // ✅ Track added products (product.name => true)
-  const [addedToCart, setAddedToCart] = useState({});
-
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
 
-    const cartItems = useSelector((state) => state.cart.items);
-    const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const isAdded = (name) => cartItems.some((item) => item.name === name);
+
   const plantsArray = [
     {
       category: "Air Purifying Plants",
@@ -245,41 +243,21 @@ function ProductList({ onHomeClick }) {
           name: "Succulents",
           image:
             "https://cdn.pixabay.com/photo/2016/11/21/16/05/cacti-1846147_1280.jpg",
-          description: "Drought-tolerant plants with unique shapes and colors.",
+          description:
+            "Drought-tolerant plants with unique shapes and colors.",
           cost: "$18",
         },
         {
           name: "Aglaonema",
           image:
             "https://cdn.pixabay.com/photo/2014/10/10/04/27/aglaonema-482915_1280.jpg",
-          description: "Requires minimal care and adds color to indoor spaces.",
+          description:
+            "Requires minimal care and adds color to indoor spaces.",
           cost: "$22",
         },
       ],
     },
   ];
-
-  const styleObj = {
-    backgroundColor: "#4CAF50",
-    padding: "15px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    fontSize: "20px",
-  };
-
-  const styleObjUl = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "1100px",
-  };
-
-  const styleA = {
-    color: "white",
-    fontSize: "30px",
-    textDecoration: "none",
-  };
 
   const handleHomeClick = (e) => {
     e.preventDefault();
@@ -302,49 +280,38 @@ function ProductList({ onHomeClick }) {
     setShowCart(false);
   };
 
-  // ✅ dispatch plant details to addItem() reducer + mark added
   const handleAddToCart = (product) => {
     dispatch(addItem(product));
-
-    setAddedToCart((prevState) => ({
-      ...prevState,
-      [product.name]: true,
-    }));
   };
 
   return (
     <div>
-      <div className="navbar" style={styleObj}>
-        <div className="tag">
-          <div className="luxury">
-            <img
-              src="https://cdn.pixabay.com/photo/2020/08/05/13/12/eco-5465432_1280.png"
-              alt=""
-            />
-            <a href="/" onClick={handleHomeClick}>
-              <div>
-                <h3 style={{ color: "white" }}>Paradise Nursery</h3>
-                <i style={{ color: "white" }}>Where Green Meets Serenity</i>
-              </div>
-            </a>
-          </div>
+      <div className="navbar">
+        <div className="luxury">
+          <img
+            src="https://cdn.pixabay.com/photo/2020/08/05/13/12/eco-5465432_1280.png"
+            alt=""
+          />
+
+          <a href="/" onClick={handleHomeClick}>
+            <div className="brandText">
+              <h3>Paradise Nursery</h3>
+              <i>Where Green Meets Serenity</i>
+            </div>
+          </a>
         </div>
 
-        <div style={styleObjUl}>
-          <div>
-            <a href="#" onClick={handlePlantsClick} style={styleA}>
-              Plants
-            </a>
-          </div>
+        <div className="nav-right">
+          <a href="#" onClick={handlePlantsClick} className="nav-link">
+            Plants
+          </a>
 
-          <div>
-            <a href="#" onClick={handleCartClick} style={styleA}>
-            <h1 className="cart" style={{ position: "relative" }}>
-  🛒
-  {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
-</h1>
-            </a>
-          </div>
+          <a href="#" onClick={handleCartClick} className="nav-link">
+            <span className="cart">
+              🛒
+              {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+            </span>
+          </a>
         </div>
       </div>
 
@@ -379,9 +346,9 @@ function ProductList({ onHomeClick }) {
                       <button
                         className="add-btn"
                         onClick={() => handleAddToCart(plant)}
-                        disabled={!!addedToCart[plant.name]}
+                        disabled={isAdded(plant.name)}
                       >
-                        {addedToCart[plant.name] ? "Added" : "Add to Cart"}
+                        {isAdded(plant.name) ? "Added to Cart" : "Add to Cart"}
                       </button>
                     </div>
                   ))}
