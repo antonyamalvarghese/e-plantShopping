@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import "./ProductList.css";
 import CartItem from "./CartItem";
-// ✅ Redux imports
+
+// ✅ Redux
 import { useDispatch } from "react-redux";
-import { addItem } from "./CartSlice"; // ✅ because CartSlice is inside src// 🔁 change path based on your folder structure
+import { addItem } from "./CartSlice"; // change to "./cartSlice" if file name is lowercase
 
 function ProductList({ onHomeClick }) {
   const [showCart, setShowCart] = useState(false);
   const [showPlants, setShowPlants] = useState(false);
 
-  // ✅ NEW: track which products are added using product name as key
+  // ✅ Track added products (product.name => true)
   const [addedToCart, setAddedToCart] = useState({});
 
-  // ✅ Redux dispatch
   const dispatch = useDispatch();
 
   const plantsArray = [
@@ -58,8 +58,7 @@ function ProductList({ onHomeClick }) {
           name: "Aloe Vera",
           image:
             "https://cdn.pixabay.com/photo/2018/04/02/07/42/leaf-3283175_1280.jpg",
-          description:
-            "Purifies the air and has healing properties for skin.",
+          description: "Purifies the air and has healing properties for skin.",
           cost: "$14",
         },
       ],
@@ -127,8 +126,7 @@ function ProductList({ onHomeClick }) {
           name: "Marigold",
           image:
             "https://cdn.pixabay.com/photo/2022/02/22/05/45/marigold-7028063_1280.jpg",
-          description:
-            "Natural insect repellent, also adds color to the garden.",
+          description: "Natural insect repellent, also adds color to the garden.",
           cost: "$8",
         },
         {
@@ -245,16 +243,14 @@ function ProductList({ onHomeClick }) {
           name: "Succulents",
           image:
             "https://cdn.pixabay.com/photo/2016/11/21/16/05/cacti-1846147_1280.jpg",
-          description:
-            "Drought-tolerant plants with unique shapes and colors.",
+          description: "Drought-tolerant plants with unique shapes and colors.",
           cost: "$18",
         },
         {
           name: "Aglaonema",
           image:
             "https://cdn.pixabay.com/photo/2014/10/10/04/27/aglaonema-482915_1280.jpg",
-          description:
-            "Requires minimal care and adds color to indoor spaces.",
+          description: "Requires minimal care and adds color to indoor spaces.",
           cost: "$22",
         },
       ],
@@ -304,13 +300,13 @@ function ProductList({ onHomeClick }) {
     setShowCart(false);
   };
 
-  // ✅ REQUIRED: Add to Cart Functionality
+  // ✅ dispatch plant details to addItem() reducer + mark added
   const handleAddToCart = (product) => {
-    dispatch(addItem(product)); // Dispatch Redux action
+    dispatch(addItem(product));
 
     setAddedToCart((prevState) => ({
       ...prevState,
-      [product.name]: true, // mark this product name as added
+      [product.name]: true,
     }));
   };
 
@@ -341,26 +337,7 @@ function ProductList({ onHomeClick }) {
 
           <div>
             <a href="#" onClick={handleCartClick} style={styleA}>
-              <h1 className="cart">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 256 256"
-                  height="68"
-                  width="68"
-                >
-                  <rect width="156" height="156" fill="none"></rect>
-                  <circle cx="80" cy="216" r="12"></circle>
-                  <circle cx="184" cy="216" r="12"></circle>
-                  <path
-                    d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8"
-                    fill="none"
-                    stroke="#faf9f9"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                  ></path>
-                </svg>
-              </h1>
+              <h1 className="cart">🛒</h1>
             </a>
           </div>
         </div>
